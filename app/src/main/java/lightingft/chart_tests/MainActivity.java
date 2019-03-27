@@ -1,5 +1,6 @@
 package lightingft.chart_tests;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -13,6 +14,9 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.CandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -41,12 +45,7 @@ public class MainActivity extends AppCompatActivity {
         chartLayout.addView(createScatterChart());
     }
 
-    /**.
-     * Initializes specified chart with specified data with test data
-     * @param chart - Chart to initialize
-     * @param chartData - Chart Data to populate
-     */
-    public void initializeSampleChart(Chart chart, ChartData chartData) {
+    public void addDataSetToChart(Chart chart) {
         DataSet dataSet = null;
 
         if (chart instanceof LineChart)
@@ -59,8 +58,24 @@ public class MainActivity extends AppCompatActivity {
             dataSet = new ScatterDataSet(new ArrayList<Entry>(), "Entries");
 
         populateDataSet(dataSet);
-        chartData.addDataSet(dataSet);
-        chart.setData(chartData);
+
+        chart.getData().addDataSet(dataSet);
+    }
+
+    /**.
+     * Initializes specified chart with specified data with test data
+     * @param chart - Chart to initialize
+     */
+    public void initializeSampleChart(Chart chart) {
+        if (chart instanceof PieChart) {
+            PieDataSet pieDataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
+            populateDataSet(pieDataSet);
+            chart.setData(new PieData(pieDataSet));
+        }
+        else {
+            addDataSetToChart(chart);
+        }
+
         chart.setMinimumHeight(500);
     }
 
@@ -70,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public LineChart createLineChart() {
         LineChart lineChart = new LineChart(this);
-        LineData data = new LineData();
-        initializeSampleChart(lineChart, data);
+        lineChart.setData(new LineData());
+        initializeSampleChart(lineChart);
 
         return lineChart;
     }
@@ -82,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public BarChart createBarChart() {
         BarChart barChart = new BarChart(this);
-        BarData data = new BarData();
-        initializeSampleChart(barChart, data);
+        barChart.setData(new BarData());
+        initializeSampleChart(barChart);
 
         return barChart;
     }
@@ -94,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public PieChart createPieChart() {
         PieChart pieChart = new PieChart(this);
-        PieData data = new PieData();
-        initializeSampleChart(pieChart, data);
+        initializeSampleChart(pieChart);
 
         return pieChart;
     }
@@ -106,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public ScatterChart createScatterChart() {
         ScatterChart scatterChart = new ScatterChart(this);
-        ScatterData data = new ScatterData();
-        initializeSampleChart(scatterChart, data);
+        scatterChart.setData(new ScatterData());
+        initializeSampleChart(scatterChart);
 
         return scatterChart;
     }
@@ -116,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
      * Populates the provided Data Set with test values
      * @param dataSet - dataSet to populate
      */
-    public void populateDataSet(DataSet dataSet) {
+    private void populateDataSet(DataSet dataSet) {
         ArrayList<Entry> entries = new ArrayList<>();
 
         for (int i = 1; i <= 10; ++i) {
