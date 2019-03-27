@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -19,6 +21,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 
 import java.util.ArrayList;
 
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         chartLayout.addView(createLineChart());
         chartLayout.addView(createBarChart());
         chartLayout.addView(createPieChart());
+        chartLayout.addView(createScatterChart());
     }
 
     /**.
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
         else if (chart instanceof PieChart)
             dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
+        else if (chart instanceof ScatterChart)
+            dataSet = new ScatterDataSet(new ArrayList<Entry>(), "Entries");
 
         populateDataSet(dataSet);
         chartData.addDataSet(dataSet);
@@ -91,6 +98,18 @@ public class MainActivity extends AppCompatActivity {
         initializeSampleChart(pieChart, data);
 
         return pieChart;
+    }
+
+    /**.
+     * Creates a sample ScatterChart
+     * @return - sample ScatterChart object with test data
+     */
+    public ScatterChart createScatterChart() {
+        ScatterChart scatterChart = new ScatterChart(this);
+        ScatterData data = new ScatterData();
+        initializeSampleChart(scatterChart, data);
+
+        return scatterChart;
     }
 
     /**.
