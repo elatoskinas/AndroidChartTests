@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -14,6 +15,9 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         chartLayout.addView(createLineChart());
         chartLayout.addView(createBarChart());
+        chartLayout.addView(createPieChart());
     }
 
     /**.
@@ -68,6 +73,20 @@ public class MainActivity extends AppCompatActivity {
         return barChart;
     }
 
+    public PieChart createPieChart() {
+        // Creates PieData from one DataSet
+        DataSet<PieEntry> dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
+        populateDataSet(dataSet);
+        PieData pieData = new PieData((PieDataSet)dataSet);
+
+        PieChart pieChart = new PieChart(this);
+        pieChart.setData(pieData);
+
+        pieChart.setMinimumHeight(500);
+
+        return pieChart;
+    }
+
     /**.
      * Populates the provided Data Set with test values
      * @param dataSet - dataSet to populate
@@ -80,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (dataSet instanceof BarDataSet)
                 entry = new BarEntry(i, i);
+            else if (dataSet instanceof PieDataSet)
+                entry = new PieEntry(i, i);
             else
                 entry = new Entry(i, i);
 
