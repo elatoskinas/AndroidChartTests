@@ -23,6 +23,34 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout chartLayout = findViewById(R.id.chartLayout);
 
+        chartLayout.addView(createLineChart());
+    }
+
+    /**.
+     * Creates a sample LineChart
+     * @return - sample LineChart object with some data
+     */
+    public LineChart createLineChart() {
+        // Create LineData from one DataSet
+        DataSet<Entry> dataSet = new LineDataSet(null, "Entries");
+        populateDataSet(dataSet);
+        LineData lineData = new LineData((LineDataSet) dataSet);
+
+        // Create the chart itself, set data to created data
+        LineChart lineChart = new LineChart(this);
+        lineChart.setData(lineData);
+
+        // Set minimum height
+        lineChart.setMinimumHeight(500);
+
+        return lineChart;
+    }
+
+    /**.
+     * Populates the provided Data Set with test values
+     * @param dataSet - dataSet to populate
+     */
+    public void populateDataSet(DataSet<Entry> dataSet) {
         ArrayList<Entry> entries = new ArrayList<>();
 
         for (int i = 1; i <= 10; ++i) {
@@ -30,13 +58,6 @@ public class MainActivity extends AppCompatActivity {
             entries.add(entry);
         }
 
-        DataSet<Entry> dataSet = new LineDataSet(entries, "Entries");
-        LineData lineData = new LineData((LineDataSet) dataSet);
-        LineChart lineChart = new LineChart(this);
-        lineChart.setData(lineData);
-
-        lineChart.setMinimumHeight(500);
-
-        chartLayout.addView(lineChart);
+        dataSet.setValues(entries);
     }
 }
