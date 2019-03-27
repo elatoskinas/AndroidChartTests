@@ -11,6 +11,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -36,21 +37,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**.
+     * Initializes specified chart with specified data with test data
+     * @param chart - Chart to initialize
+     * @param chartData - Chart Data to populate
+     */
+    public void initializeSampleChart(Chart chart, ChartData chartData) {
+        DataSet dataSet = null;
+
+        if (chart instanceof LineChart)
+            dataSet = new LineDataSet(new ArrayList<Entry>(), "Entries");
+        else if (chart instanceof BarChart)
+            dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
+        else if (chart instanceof PieChart)
+            dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
+
+        populateDataSet(dataSet);
+        chartData.addDataSet(dataSet);
+        chart.setData(chartData);
+        chart.setMinimumHeight(500);
+    }
+
+    /**.
      * Creates a sample LineChart
      * @return - sample LineChart object with test data
      */
     public LineChart createLineChart() {
-        // Create LineData from one DataSet
-        DataSet<Entry> dataSet = new LineDataSet(null, "Entries");
-        populateDataSet(dataSet);
-        LineData lineData = new LineData((LineDataSet) dataSet);
-
-        // Create the chart itself, set data to created data
         LineChart lineChart = new LineChart(this);
-        lineChart.setData(lineData);
-
-        // Set minimum height
-        lineChart.setMinimumHeight(500);
+        LineData data = new LineData();
+        initializeSampleChart(lineChart, data);
 
         return lineChart;
     }
@@ -60,29 +74,21 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample BarChart object with test data
      */
     public BarChart createBarChart() {
-        // Create BarData from one DataSet
-        DataSet<BarEntry> dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
-        populateDataSet(dataSet);
-        BarData barData = new BarData((BarDataSet) dataSet);
-
         BarChart barChart = new BarChart(this);
-        barChart.setData(barData);
-
-        barChart.setMinimumHeight(500);
+        BarData data = new BarData();
+        initializeSampleChart(barChart, data);
 
         return barChart;
     }
 
+    /**.
+     * Creates a sample PieChart
+     * @return - sample PieChart object with test data
+     */
     public PieChart createPieChart() {
-        // Creates PieData from one DataSet
-        DataSet<PieEntry> dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
-        populateDataSet(dataSet);
-        PieData pieData = new PieData((PieDataSet)dataSet);
-
         PieChart pieChart = new PieChart(this);
-        pieChart.setData(pieData);
-
-        pieChart.setMinimumHeight(500);
+        PieData data = new PieData();
+        initializeSampleChart(pieChart, data);
 
         return pieChart;
     }
