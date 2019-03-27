@@ -7,6 +7,9 @@ import android.widget.LinearLayout;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -24,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout chartLayout = findViewById(R.id.chartLayout);
 
         chartLayout.addView(createLineChart());
+        chartLayout.addView(createBarChart());
     }
 
     /**.
      * Creates a sample LineChart
-     * @return - sample LineChart object with some data
+     * @return - sample LineChart object with test data
      */
     public LineChart createLineChart() {
         // Create LineData from one DataSet
@@ -47,14 +51,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**.
+     * Creates a sample BarChart
+     * @return - sample BarChart object with test data
+     */
+    public BarChart createBarChart() {
+        // Create BarData from one DataSet
+        DataSet<BarEntry> dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
+        populateDataSet(dataSet);
+        BarData barData = new BarData((BarDataSet) dataSet);
+
+        BarChart barChart = new BarChart(this);
+        barChart.setData(barData);
+
+        barChart.setMinimumHeight(500);
+
+        return barChart;
+    }
+
+    /**.
      * Populates the provided Data Set with test values
      * @param dataSet - dataSet to populate
      */
-    public void populateDataSet(DataSet<Entry> dataSet) {
+    public void populateDataSet(DataSet dataSet) {
         ArrayList<Entry> entries = new ArrayList<>();
 
         for (int i = 1; i <= 10; ++i) {
-            Entry entry = new Entry(i, i);
+            Entry entry;
+
+            if (dataSet instanceof BarDataSet)
+                entry = new BarEntry(i, i);
+            else
+                entry = new Entry(i, i);
+
             entries.add(entry);
         }
 
