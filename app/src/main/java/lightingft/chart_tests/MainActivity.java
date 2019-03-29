@@ -39,44 +39,38 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout chartLayout = findViewById(R.id.chartLayout);
 
-        chartLayout.addView(createLineChart());
-        chartLayout.addView(createBarChart());
-        chartLayout.addView(createPieChart());
-        chartLayout.addView(createScatterChart());
-    }
+        LineChart lineChart = createLineChart();
+        BarChart barChart = createBarChart();
+        PieChart pieChart = createPieChart();
+        ScatterChart scatterChart = createScatterChart();
 
-    public void addDataSetToChart(Chart chart) {
-        DataSet dataSet = null;
-
-        if (chart instanceof LineChart)
-            dataSet = new LineDataSet(new ArrayList<Entry>(), "Entries");
-        else if (chart instanceof BarChart)
-            dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
-        else if (chart instanceof PieChart)
-            dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
-        else if (chart instanceof ScatterChart)
-            dataSet = new ScatterDataSet(new ArrayList<Entry>(), "Entries");
-
-        populateDataSet(dataSet);
-
-        chart.getData().addDataSet(dataSet);
+        chartLayout.addView(lineChart);
+        chartLayout.addView(barChart);
+        chartLayout.addView(pieChart);
+        chartLayout.addView(scatterChart);
     }
 
     /**.
-     * Initializes specified chart with specified data with test data
-     * @param chart - Chart to initialize
+     * Adds test data set to specified ChartData object
+     * @param data - ChartData object
+     * @param scalar - Scalar to multiply test entries by
+     * @param colors - Chart colors
      */
-    public void initializeSampleChart(Chart chart) {
-        if (chart instanceof PieChart) {
-            PieDataSet pieDataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
-            populateDataSet(pieDataSet);
-            chart.setData(new PieData(pieDataSet));
-        }
-        else {
-            addDataSetToChart(chart);
-        }
+    public void addDataSetToChartData(ChartData data, int scalar, int... colors) {
+        DataSet dataSet = null;
 
-        chart.setMinimumHeight(500);
+        if (data instanceof LineData)
+            dataSet = new LineDataSet(new ArrayList<Entry>(), "Entries");
+        else if (data instanceof BarData)
+            dataSet = new BarDataSet(new ArrayList<BarEntry>(), "Entries");
+        else if (data instanceof PieData)
+            dataSet = new PieDataSet(new ArrayList<PieEntry>(), "Entries");
+        else if (data instanceof ScatterData)
+            dataSet = new ScatterDataSet(new ArrayList<Entry>(), "Entries");
+
+        populateDataSet(dataSet, scalar);
+        dataSet.setColors(colors);
+        data.addDataSet(dataSet);
     }
 
     /**.
@@ -84,9 +78,17 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample LineChart object with test data
      */
     public LineChart createLineChart() {
+        // Create new LineChart and set LineData to empty
         LineChart lineChart = new LineChart(this);
         lineChart.setData(new LineData());
-        initializeSampleChart(lineChart);
+
+        // Add three data sets
+        addDataSetToChartData(lineChart.getData(), 1, Color.RED);
+        addDataSetToChartData(lineChart.getData(), 2, Color.GREEN);
+        addDataSetToChartData(lineChart.getData(), 3, Color.BLUE);
+
+        // Set minimum chart height
+        lineChart.setMinimumHeight(500);
 
         return lineChart;
     }
@@ -96,9 +98,15 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample BarChart object with test data
      */
     public BarChart createBarChart() {
+        // Create new BarChart and set BarData to empty
         BarChart barChart = new BarChart(this);
         barChart.setData(new BarData());
-        initializeSampleChart(barChart);
+
+        // Add one new data set
+        addDataSetToChartData(barChart.getData(), 1, Color.GREEN);
+
+        // Set minimum chart height
+        barChart.setMinimumHeight(500);
 
         return barChart;
     }
@@ -108,8 +116,21 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample PieChart object with test data
      */
     public PieChart createPieChart() {
+        // Create new PieChart
         PieChart pieChart = new PieChart(this);
-        initializeSampleChart(pieChart);
+
+        // Create new PieData Object and populate it
+        PieData pieData = new PieData();
+        addDataSetToChartData(pieData, 1, Color.YELLOW, Color.CYAN, Color.RED);
+
+        // Set PieChart data to PieData object
+        pieChart.setData(pieData);
+
+        // NOTE that here doing pieChart.setData(new PieData()) does not work,
+        // since that simply results in an exception.
+
+        // Set chart minimum height
+        pieChart.setMinimumHeight(500);
 
         return pieChart;
     }
@@ -119,9 +140,15 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample ScatterChart object with test data
      */
     public ScatterChart createScatterChart() {
+        // Create new ScatterChart with empty ScatterData object
         ScatterChart scatterChart = new ScatterChart(this);
         scatterChart.setData(new ScatterData());
-        initializeSampleChart(scatterChart);
+
+        // Populate ScatterData
+        addDataSetToChartData(scatterChart.getData(), 1, Color.BLACK);
+
+        // Set Chart minimum height
+        scatterChart.setMinimumHeight(500);
 
         return scatterChart;
     }
@@ -130,22 +157,29 @@ public class MainActivity extends AppCompatActivity {
      * Populates the provided Data Set with test values
      * @param dataSet - dataSet to populate
      */
-    private void populateDataSet(DataSet dataSet) {
+    private void populateDataSet(DataSet dataSet, int scalar) {
+        // Create new list of entries
         ArrayList<Entry> entries = new ArrayList<>();
 
         for (int i = 1; i <= 10; ++i) {
+            // Define empty Entry object (abstract)
             Entry entry;
 
+            // Check which entry to create by DataSet type
             if (dataSet instanceof BarDataSet)
-                entry = new BarEntry(i, i);
+                entry = new BarEntry(i, scalar*i);
             else if (dataSet instanceof PieDataSet)
-                entry = new PieEntry(i, i);
+                entry = new PieEntry(i, scalar*i);
             else
-                entry = new Entry(i, i);
+                entry = new Entry(i, scalar*i);
 
+            // Add entry to list
             entries.add(entry);
         }
 
+        // Set DataSet to generated entries list
+        // (Shows warning here, but it's made sure that entries
+        // are of correct type)
         dataSet.setValues(entries);
     }
 }
