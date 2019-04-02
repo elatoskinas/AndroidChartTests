@@ -1,6 +1,7 @@
 package lightingft.chart_tests;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -38,6 +39,12 @@ import com.github.mikephil.charting.data.ScatterDataSet;
 
 import java.util.ArrayList;
 
+/**.
+ * An example Android Activity that demonstrates the 7 charts of
+ * MPAndroidChart
+ *
+ * @author - lightingft
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         ScatterChart scatterChart = createScatterChart();
         BubbleChart bubbleChart = createBubbleChart();
         RadarChart radarChart = createRadarChart();
+        CandleStickChart candleStickChart = createCandleStickChart();
 
         chartLayout.addView(lineChart);
         chartLayout.addView(barChart);
@@ -60,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         chartLayout.addView(scatterChart);
         chartLayout.addView(bubbleChart);
         chartLayout.addView(radarChart);
+        chartLayout.addView(candleStickChart);
     }
 
     /**.
@@ -83,10 +92,29 @@ public class MainActivity extends AppCompatActivity {
             dataSet = new BubbleDataSet(new ArrayList<BubbleEntry>(), "Entries");
         else if (data instanceof RadarData)
             dataSet = new RadarDataSet(new ArrayList<RadarEntry>(), "Entries");
+        else if (data instanceof CandleData) {
+            dataSet = new CandleDataSet(new ArrayList<CandleEntry>(), "Entries");
+            initializeCandleDataSet((CandleDataSet)dataSet);
+        }
 
         populateDataSet(dataSet, scalar);
         dataSet.setColors(colors);
         data.addDataSet(dataSet);
+    }
+
+    private void initializeCandleDataSet(CandleDataSet dataSet) {
+        // Set Shadow width & color
+        dataSet.setShadowWidth(0.5f);
+        dataSet.setShadowColor(Color.DKGRAY);
+
+        // Set increasing & decreasing visualization styles
+        dataSet.setDecreasingColor(Color.RED);
+        dataSet.setDecreasingPaintStyle(Paint.Style.STROKE);
+        dataSet.setIncreasingColor(Color.GREEN);
+        dataSet.setIncreasingPaintStyle(Paint.Style.FILL);
+
+        // Set neutral value color
+        dataSet.setNeutralColor(Color.BLACK);
     }
 
     /**.
@@ -196,20 +224,34 @@ public class MainActivity extends AppCompatActivity {
      * @return - sample RadarChart object with test data
      */
     public RadarChart createRadarChart() {
-        // Create new RadarChart with empty RadarData object
+        // Create new RadarChart
         RadarChart radarChart = new RadarChart(this);
 
+        // Create new RadarData object and populate it
         RadarData radarData = new RadarData();
-
-        // Populate RadarData
         addDataSetToChartData(radarData, 1, Color.BLUE);
 
+        // Set RadarChart data to RadarData object
         radarChart.setData(radarData);
 
         // Set Chart minimum height
         radarChart.setMinimumHeight(500);
 
         return radarChart;
+    }
+
+    public CandleStickChart createCandleStickChart() {
+        // Create new CandleStickChart with empty CandleData object
+        CandleStickChart candleStickChart = new CandleStickChart(this);
+        candleStickChart.setData(new CandleData());
+
+        // Populate CandleData
+        addDataSetToChartData(candleStickChart.getData(), 1, Color.CYAN);
+
+        // Set Charrt minimum height
+        candleStickChart.setMinimumHeight(500);
+
+        return candleStickChart;
     }
 
     /**.
@@ -233,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                 entry = new RadarEntry(i, scalar*i);
             else if (dataSet instanceof BubbleDataSet)
                 entry = new BubbleEntry(i*1.0f, i*1.0f, scalar*i*0.5f);
+            else if (dataSet instanceof CandleDataSet)
+                entry = new CandleEntry(i, i+1, i, i-1, i+4);
             else
                 entry = new Entry(i, scalar*i);
 
