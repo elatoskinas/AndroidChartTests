@@ -102,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
         data.addDataSet(dataSet);
     }
 
+    /**.
+     * Initializes passed in CandleDataSet instance with test values
+     * @param dataSet - CandleDataSet instance
+     */
     private void initializeCandleDataSet(CandleDataSet dataSet) {
         // Set Shadow width & color
         dataSet.setShadowWidth(0.5f);
