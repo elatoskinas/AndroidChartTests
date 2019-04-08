@@ -2,6 +2,8 @@
 ## Introduction
 A demonstration Android application to illustrate some example charts of the MPAndroidChart library.
 
+[See Releases for .apk to try it out](https://github.com/lightingft/AndroidChartTests/releases)
+
 ## How to Use
 1.Clone the repository
 
