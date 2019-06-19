@@ -3,6 +3,7 @@ package lightingft.chart_tests;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private Button allChartsButton;
+    private Button barChartsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +60,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         allChartsButton = findViewById(R.id.allChartsButton);
+        barChartsButton = findViewById(R.id.barChartsButton);
 
         allChartsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Go to All Charts Activity
-                Intent intent = new Intent(MainActivity.this, AllChartsActivity.class);
-                startActivity(intent);
+                goToActivity(AllChartsActivity.class);
             }
         });
+
+        barChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Go to Bar Charts Activity
+                goToActivity(BarChartsActivity.class);
+            }
+        });
+    }
+
+    private void goToActivity(Class activity) {
+        Intent intent = new Intent(MainActivity.this, activity);
+        startActivity(intent);
     }
 }
