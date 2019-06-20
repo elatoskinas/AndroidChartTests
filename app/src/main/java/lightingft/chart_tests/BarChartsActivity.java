@@ -9,13 +9,16 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.StackedValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BarChartsActivity extends AppCompatActivity {
 
     private BarChart barChartGrouped;
+    private BarChart barChartStacked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +28,13 @@ public class BarChartsActivity extends AppCompatActivity {
         LinearLayout barChartLayout = findViewById(R.id.barChartLayout);
 
         initializeBarChartGrouped();
+        initializeBarChartStacked();
+
         barChartLayout.addView(barChartGrouped);
+        barChartLayout.addView(barChartStacked);
     }
 
-    public void initializeBarChartGrouped() {
+    private void initializeBarChartGrouped() {
         final int entryCount = 5;
         final float groupSpace = 0.1f;
         final float barSpace = 0.0f;
@@ -69,5 +75,21 @@ public class BarChartsActivity extends AppCompatActivity {
         barChartGrouped.getXAxis().setAxisMaximum(0 + barDataGrouped.getGroupWidth(groupSpace, barSpace) * entryCount);
 
         barChartGrouped.invalidate();
+    }
+
+    private void initializeBarChartStacked() {
+        // Instantiate BarData and BarDataSet objects
+        BarData barDataStacked = new BarData();
+        BarDataSet set = new BarDataSet(new ArrayList<BarEntry>(), "Data");
+
+        barDataStacked.addDataSet(set);
+
+        // Create the Bar Chart & set the Data
+        barChartStacked = new BarChart(this);
+        barChartStacked.setData(barDataStacked);
+
+        // Set minimum height for the Bar Chart
+        barChartStacked.setMinimumHeight(500);
+        barChartStacked.invalidate();
     }
 }
