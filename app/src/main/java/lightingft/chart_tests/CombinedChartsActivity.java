@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -13,6 +14,8 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -36,8 +39,7 @@ public class CombinedChartsActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes a Combined Chart object with Line, Scatter, Bar, Bubble
-     * and Candle data.
+     * Initializes a Combined Chart object with Line, Scatter and Bar data.
      */
     private void initializeCombinedChart() {
         combinedChart = new CombinedChart(this);
@@ -60,6 +62,7 @@ public class CombinedChartsActivity extends AppCompatActivity {
 
         sampleCombinedData.setData(createRandomLineData("Line Data", 5f));
         sampleCombinedData.setData(createRandomBarData("Bar Data", 12f));
+        sampleCombinedData.setData(createRandomScatterData("Scatter Data", 2f));
 
         return sampleCombinedData;
     }
@@ -120,5 +123,34 @@ public class CombinedChartsActivity extends AppCompatActivity {
         barData.addDataSet(set);
 
         return barData;
+    }
+
+    /**
+     * Returns a randomized Scatter Data object with one ScatterDataSet
+     *
+     * Returns values in [0, multiplier] range
+     *
+     * @param label  label of the Data Set
+     * @param multiplier  multiplier of random values.
+     * @return Randomized ScatterData object instance
+     */
+    public ScatterData createRandomScatterData(String label, float multiplier) {
+        Random random = new Random();
+
+        ScatterDataSet set = new ScatterDataSet(new ArrayList<Entry>(), label);
+
+        set.setColor(Color.BLUE);
+        set.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+
+        for (int i = 1; i <= 5; ++i) {
+            float y = random.nextFloat() * multiplier;
+            Entry entry = new Entry(i, y);
+            set.addEntry(entry);
+        }
+
+        ScatterData scatterData = new ScatterData();
+        scatterData.addDataSet(set);
+
+        return scatterData;
     }
 }
