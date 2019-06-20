@@ -1,10 +1,14 @@
 package lightingft.chart_tests;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -39,6 +43,10 @@ public class CombinedChartsActivity extends AppCompatActivity {
         combinedChart = new CombinedChart(this);
         combinedData = createSampleCombinedData();
         combinedChart.setData(combinedData);
+
+        combinedChart.getXAxis().setAxisMinimum(0f);
+        combinedChart.getXAxis().setAxisMaximum(6f);
+
         combinedChart.setMinimumHeight(500);
     }
 
@@ -51,6 +59,7 @@ public class CombinedChartsActivity extends AppCompatActivity {
         CombinedData sampleCombinedData = new CombinedData();
 
         sampleCombinedData.setData(createRandomLineData("Line Data", 5f));
+        sampleCombinedData.setData(createRandomBarData("Bar Data", 12f));
 
         return sampleCombinedData;
     }
@@ -69,6 +78,9 @@ public class CombinedChartsActivity extends AppCompatActivity {
 
         LineDataSet set = new LineDataSet(new ArrayList<Entry>(), label);
 
+        set.setColor(Color.RED);
+        set.setCircleColor(Color.RED);
+
         for (int i = 1; i <= 5; ++i) {
             float y = random.nextFloat() * multiplier;
             Entry entry = new Entry(i, y);
@@ -82,5 +94,31 @@ public class CombinedChartsActivity extends AppCompatActivity {
         lineData.addDataSet(set);
 
         return lineData;
+    }
+
+    /**
+     * Returns a randomized Bar Data object with one BarDataSet
+     *
+     * Returns values in [0, multiplier] range
+     *
+     * @param label  label of the Data Set
+     * @param multiplier  multiplier of random values.
+     * @return Randomized BarData object instance
+     */
+    public BarData createRandomBarData(String label, float multiplier) {
+        Random random = new Random();
+
+        BarDataSet set = new BarDataSet(new ArrayList<BarEntry>(), label);
+
+        for (int i = 1; i <= 5; ++i) {
+            float y = random.nextFloat() * multiplier;
+            BarEntry barEntry = new BarEntry(i, y);
+            set.addEntry(barEntry);
+        }
+
+        BarData barData = new BarData();
+        barData.addDataSet(set);
+
+        return barData;
     }
 }
