@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private Button allChartsButton;
     private Button barChartsButton;
     private Button combinedChartsButton;
+    private Button pieChartsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         allChartsButton = findViewById(R.id.allChartsButton);
         barChartsButton = findViewById(R.id.barChartsButton);
         combinedChartsButton = findViewById(R.id.combinedChartsButton);
+        pieChartsButton = findViewById(R.id.pieChartsButton);
 
         allChartsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Go to Combined Charts Activity
                 goToActivity(CombinedChartsActivity.class);
+            }
+        });
+
+        pieChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Go to Pie Charts Activity
+                goToActivity(PieChartsActivity.class);
             }
         });
     }

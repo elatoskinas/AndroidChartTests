@@ -53,8 +53,7 @@ public class CombinedChartsActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns a sample Combined Data object with Line, Scatter,
-     * Bar, Bubble and Candle data.
+     * Returns a sample Combined Data object with Line, Scatter and Bar data.
      * @return  sample CombinedData object instance
      */
     private CombinedData createSampleCombinedData() {
