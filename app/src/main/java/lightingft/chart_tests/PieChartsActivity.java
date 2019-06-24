@@ -50,53 +50,59 @@ public class PieChartsActivity extends AppCompatActivity {
     private void initializeMainPieChart() {
         mainPieChart = createPieChart();
 
-        mainPieChart.setMinimumHeight(1000);
-        mainPieChart.setMinimumWidth(1000);
+        // Set width and height of the Pie Chart to 1000
+        mainPieChart.setLayoutParams(new PieChart.LayoutParams(1000, 1000));
 
         charts.add(mainPieChart);
     }
 
     private void addInnerPieChart() {
+        // Get the last chart in the charts list
         PieChart lastChart = charts.get(charts.size() - 1);
 
+        // Re-scale hole radius of the last Chart to fit new Chart
         lastChart.setHoleRadius(75f);
         lastChart.setTransparentCircleRadius(75f);
         lastChart.invalidate();
 
-        System.out.println(lastChart.getMinimumWidth());
-        int width = (int)(lastChart.getMinimumWidth() * 0.75f);
+        // Compute new width and height of the new Inner Chart
+        int width = (int)(lastChart.getWidth() * 0.75f);
+        int height = (int)(lastChart.getHeight() * 0.75f);
 
+        // Create new inner Chart, add it to the Chart Layout
         PieChart innerChart = createPieChart();
-        innerChart.setMinimumHeight(width);
-        innerChart.setMinimumWidth(width);
-
         chartLayout.addView(innerChart);
 
+        // Center & set the width and height parameters of the Inner Chart
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)innerChart
                 .getLayoutParams();
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        params.width = width;
+        params.height = height;
         innerChart.setLayoutParams(params);
 
+        // Add Inner Chart to charts list
         charts.add(innerChart);
     }
 
     private PieChart createPieChart() {
         PieChart chart = new PieChart(this);
 
-        PieData pieData = new PieData();
-
+        // Create and populate PieDataSet
         PieDataSet pieDataSet = new PieDataSet(new ArrayList<PieEntry>(), "Data");
-
         pieDataSet.addEntry(new PieEntry(100f));
         pieDataSet.addEntry(new PieEntry(50f));
         pieDataSet.addEntry(new PieEntry(25f));
 
+        // Set random colors for the 3 entries of the PieDataSet
         pieDataSet.setColors(getRandomColor(), getRandomColor(), getRandomColor());
 
+        // Set Data Set to PieData; Set PieData to Chart
+        PieData pieData = new PieData();
         pieData.setDataSet(pieDataSet);
-
         chart.setData(pieData);
 
+        // Disable legend and description
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
 
