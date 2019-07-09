@@ -1,47 +1,10 @@
 package lightingft.chart_tests;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.charts.CandleStickChart;
-import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-
-import java.util.ArrayList;
 
 /**.
  * The main activity that provides navigation to all the other
@@ -55,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button barChartsButton;
     private Button combinedChartsButton;
     private Button pieChartsButton;
+    private Button lineChartsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         barChartsButton = findViewById(R.id.barChartsButton);
         combinedChartsButton = findViewById(R.id.combinedChartsButton);
         pieChartsButton = findViewById(R.id.pieChartsButton);
+        lineChartsButton = findViewById(R.id.lineChartsButton);
 
         allChartsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Go to Pie Charts Activity
                 goToActivity(PieChartsActivity.class);
+            }
+        });
+
+        lineChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Go to Line Charts Activity
+                goToActivity(LineChartsActivity.class);
             }
         });
     }
