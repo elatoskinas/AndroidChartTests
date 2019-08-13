@@ -42,5 +42,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Line Charts" />
+
+        <Button
+            android:id="@+id/dynamicChartsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dynamic Charts" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
